@@ -88,7 +88,18 @@ export class HashMap {
     return null;
   }
 
-  // get(key) takes one argument as a key and returns the value that is assigned to this key. If a key is not found, return null.
+  has(key) {
+    const hashCode = this.hash(key);
+    const bucket = this.#buckets[hashCode];
+    let target = null;
+
+    if (bucket !== null && bucket instanceof LinkedList) {
+      target = bucket.search(key);
+    }
+
+    if (target !== null) return true;
+    return false;
+  }
 
   // has(key) takes a key as an argument and returns true or false based on whether or not the key is in the hash map.
 
