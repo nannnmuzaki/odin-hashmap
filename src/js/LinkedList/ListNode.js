@@ -3,7 +3,8 @@ export class ListNode {
   #value = null;
   #nextNode = null;
 
-  constructor(value) {
+  constructor(key, value) {
+    this.key = key;
     this.value = value;
   }
 
@@ -12,7 +13,7 @@ export class ListNode {
   }
 
   set key(key) {
-    if (typeof key !== string) {
+    if (typeof key !== "string") {
       throw new TypeError("key must be a string");
     }
     this.#key = key;
