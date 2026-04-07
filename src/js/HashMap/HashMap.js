@@ -150,7 +150,13 @@ export class HashMap {
     return values;
   }
 
-  // values() returns an array containing all the values.
+  entries() {
+    const entries = [];
+    this.#traverse((node) => {
+      entries.push([node.key, node.value]);
+    });
+    return entries;
+  }
 
   // entries() returns an array that contains each key, value pair. Example: [[firstKey, firstValue], [secondKey, secondValue]]
 
