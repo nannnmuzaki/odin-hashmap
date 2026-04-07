@@ -53,7 +53,7 @@ export class LinkedList {
     if (Object.is(this.#tailNode.key, key)) return this.#tailNode;
 
     let current = this.#headNode;
-    while (current.nextNode !== null) {
+    while (current !== null) {
       if (Object.is(current.key, key)) return current;
       current = current.nextNode;
     }
@@ -65,42 +65,47 @@ export class LinkedList {
     let current = this.#headNode;
     let string = "";
     while (current !== null) {
-      string += `( ${current.value} ) -> `;
+      string += `( ${current.key}: ${current.value} ) -> `;
       current = current.nextNode;
     }
 
     return string + "null";
   }
 
-  removeAt(index) {
-    if (index < 0) throw new RangeError("Valid index starts from 0");
-    if (index >= this.#listSize) throw new RangeError("Index is out of bound");
+  removeByKey(key) {
+    const target = this.search(key);
+    if (target === null) return false;
 
-    if (index === 0) {
-      return this.pop();
+    if (target === this.#tailNode && target === this.#headNode) {
+      this.#headNode = null;
+      this.#tailNode = null;
+      this.#listSize--;
+      return true;
     }
-    if (index === this.#listSize - 1) {
+
+    if (target === this.#headNode) {
+      this.#head = this.#headNode.nextNode;
+      this.#listSize--;
+      return true;
+    }
+
+    if (target === this.#tailNode) {
       let current = this.#headNode;
       while (current.nextNode.nextNode !== null) {
         current = current.nextNode;
       }
-      const temp = current.nextNode;
       current.nextNode = null;
       this.#tail = current;
       this.#listSize--;
-      return temp.value;
+      return true;
     }
-    if (index >= 0 && index < this.#listSize - 1) {
-      let i = 0;
-      let current = this.#headNode;
-      while (i !== index - 1) {
-        current = current.nextNode;
-        i++;
-      }
-      const temp = current.nextNode;
-      current.nextNode = current.nextNode.nextNode;
-      this.#listSize--;
-      return temp.value;
+
+    let current = this.#headNode;
+    while (current.nextNode !== target) {
+      current = current.nextNode;
     }
+    current.nextNode = current.nextNode.nextNode;
+    this.#listSize--;
+    return true;
   }
 }
