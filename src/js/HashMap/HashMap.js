@@ -122,17 +122,25 @@ export class HashMap {
     return this;
   }
 
-  // #traverse(callbackFn) {
-  //   for (let i = 0; i < this.#capacity; i++) {
-  //     if (this.#buckets[i] !== null && this.#buckets[i] instanceof LinkedList) {
-  //       let currentNode = this.#buckets[i].head;
-  //       for (let j = 0; j < this.#buckets[i].size; j++) {
-  //         callbackFn();
-  //         currentNode = currentNode.nextNode;
-  //       }
-  //     }
-  //   }
-  // }
+  #traverse(callbackFn) {
+    for (let i = 0; i < this.#capacity; i++) {
+      if (this.#buckets[i] !== null && this.#buckets[i] instanceof LinkedList) {
+        let currentNode = this.#buckets[i].head;
+        for (let j = 0; j < this.#buckets[i].size; j++) {
+          callbackFn(currentNode);
+          currentNode = currentNode.nextNode;
+        }
+      }
+    }
+  }
+
+  keys() {
+    const keys = [];
+    this.#traverse((node) => {
+      keys.push(node.key);
+    });
+    return keys;
+  }
 
   // keys() returns an array containing all the keys inside the hash map.
 

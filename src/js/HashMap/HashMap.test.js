@@ -320,4 +320,61 @@ describe("HashMap class", () => {
       expect(map.capacity).toBe(16);
     });
   });
+
+  describe("HashMap keys()", () => {
+    test("return array containing all keys", () => {
+      map.set("test10", "test10to");
+      map.set("test12", "test12to");
+      map.set("test", "testto");
+      expect(map.keys()).toEqual(["test10", "test", "test12"]);
+      expect(map.keys().length).toBe(3);
+    });
+
+    test("return array containing all keys after buckets growth", () => {
+      map.set("test1", "test1");
+      map.set("test2", "test2");
+      map.set("test3", "test3");
+      map.set("test4", "test4");
+      map.set("test5", "test5");
+      map.set("test6", "test6");
+      map.set("test7", "test7");
+      map.set("test8", "test8");
+      map.set("test9", "test9");
+      map.set("test10", "test10");
+      map.set("test11", "test11");
+      expect(map.length).toBe(11);
+      expect(map.capacity).toBe(16);
+      expect(map.keys()).toEqual([
+        "test2",
+        "test3",
+        "test10",
+        "test4",
+        "test11",
+        "test5",
+        "test6",
+        "test7",
+        "test8",
+        "test9",
+        "test1",
+      ]);
+      expect(map.keys().length).toBe(11);
+      expect(map.set("test12", "test12").length).toBe(12);
+      expect(map.keys()).toEqual([
+        "test2",
+        "test3",
+        "test4",
+        "test5",
+        "test6",
+        "test7",
+        "test8",
+        "test9",
+        "test10",
+        "test11",
+        "test12",
+        "test1",
+      ]);
+      expect(map.keys().length).toBe(12);
+      expect(map.capacity).toBe(32);
+    });
+  });
 });
