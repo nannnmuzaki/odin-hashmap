@@ -101,7 +101,19 @@ export class HashMap {
     return false;
   }
 
-  // has(key) takes a key as an argument and returns true or false based on whether or not the key is in the hash map.
+  remove(key) {
+    const hashCode = this.hash(key);
+    const bucket = this.#buckets[hashCode];
+    let deleted = false;
+
+    if (bucket !== null && bucket instanceof LinkedList) {
+      deleted = bucket.removeByKey(key);
+    }
+
+    if (deleted === true) this.#entries--;
+
+    return deleted;
+  }
 
   // remove(key) takes a key as an argument. If the given key is in the hash map, it should remove the entry with that key and return true. If the key isn’t in the hash map, it should return false.
 

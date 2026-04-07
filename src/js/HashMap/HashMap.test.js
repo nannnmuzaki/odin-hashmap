@@ -16,7 +16,7 @@ describe("HashMap class", () => {
     });
   });
 
-  describe("HashMap set()", () => {
+  describe("HashMap set(key, value)", () => {
     test("correctly throw a TypeError when the key is not a string", () => {
       expect(() => map.set(2, "test")).toThrow(TypeError);
       expect(() => map.set({}, "test")).toThrow(TypeError);
@@ -65,7 +65,7 @@ describe("HashMap class", () => {
     });
   });
 
-  describe("HashMap get()", () => {
+  describe("HashMap get(key)", () => {
     test("correctly throw a TypeError when the key is not a string", () => {
       expect(() => map.get(2)).toThrow(TypeError);
       expect(() => map.get({})).toThrow(TypeError);
@@ -127,7 +127,7 @@ describe("HashMap class", () => {
     });
   });
 
-  describe("HashMap has()", () => {
+  describe("HashMap has(key)", () => {
     test("correctly throw a TypeError when the key is not a string", () => {
       expect(() => map.has(2)).toThrow(TypeError);
       expect(() => map.has({})).toThrow(TypeError);
@@ -159,12 +159,12 @@ describe("HashMap class", () => {
       expect(map.has("test4")).toBe(true);
     });
 
-    test("return false when the target node doesn't exist", () => {
+    test("return false when the target key value doesn't exist", () => {
       map.set("test", "test");
       expect(map.has("test2")).toBe(false);
     });
 
-    test("return false when the target key value does't in a multiple entries HashMap", () => {
+    test("return false when the target key value doesn't in a multiple entries HashMap", () => {
       map.set("test", "test");
       map.set("test10", "test10to");
       map.set("test12", "test12to");
@@ -176,7 +176,7 @@ describe("HashMap class", () => {
       map.set("test12", "test12to");
       map.set("test", "testto");
       map.set("test4", "test4to");
-      expect(map.hash("test4")).toBe(map.hash("test4"));
+      expect(map.hash("test")).toBe(map.hash("test4"));
       expect(map.has("test14")).toBe(false);
     });
 
@@ -184,8 +184,73 @@ describe("HashMap class", () => {
       map.set("test10", "test10to");
       map.set("test12", "test12to");
       map.set("test", "testto");
-      expect(map.hash("test4")).toBe(map.hash("test4"));
+      expect(map.hash("test")).toBe(map.hash("test4"));
       expect(map.has("test4")).toBe(false);
+    });
+  });
+
+  describe("HashMap remove(key)", () => {
+    test("correctly throw a TypeError when the key is not a string", () => {
+      expect(() => map.remove(2)).toThrow(TypeError);
+      expect(() => map.remove({})).toThrow(TypeError);
+      expect(() => map.remove([])).toThrow(TypeError);
+      expect(() => map.remove(null)).toThrow(TypeError);
+      expect(() => map.remove(NaN)).toThrow(TypeError);
+      expect(() => map.remove(Infinity)).toThrow(TypeError);
+      expect(() => map.remove()).toThrow(TypeError);
+    });
+
+    test("return true and remove the target when the target key value exist", () => {
+      map.set("test", "testo");
+      expect(map.length).toBe(1);
+      expect(map.remove("test")).toBe(true);
+      expect(map.length).toBe(0);
+    });
+
+    test("return true and remove the target when the target key value exist in a multiple entries HashMap", () => {
+      map.set("test", "test");
+      map.set("test10", "test10to");
+      map.set("test12", "test12to");
+      expect(map.length).toBe(3);
+      expect(map.remove("test")).toBe(true);
+      expect(map.length).toBe(2);
+    });
+
+    test("return true when the target key value exist in a multiple entries HashMap \nwhere a bucket contains more than one key value pair", () => {
+      map.set("test10", "test10to");
+      map.set("test12", "test12to");
+      map.set("test", "testto");
+      map.set("test4", "test4to");
+      expect(map.hash("test")).toBe(map.hash("test4"));
+      expect(map.length).toBe(4);
+      expect(map.remove("test4")).toBe(true);
+      expect(map.length).toBe(3);
+    });
+
+    test("return false when the target key value doesn't exist", () => {
+      map.set("test", "test");
+      expect(map.length).toBe(1);
+      expect(map.remove("test4")).toBe(false);
+      expect(map.length).toBe(1);
+    });
+
+    test("return false when the target key value doesn't exist in a multiple entries HashMap", () => {
+      map.set("test", "test");
+      map.set("test10", "test10to");
+      map.set("test12", "test12to");
+      expect(map.length).toBe(3);
+      expect(map.remove("test14")).toBe(false);
+      expect(map.length).toBe(3);
+    });
+
+    test("return false when the target key hashCode is the same with other entries \n but the target key value doesn't exist in a multiple entries HashMap", () => {
+      map.set("test10", "test10to");
+      map.set("test12", "test12to");
+      map.set("test", "testto");
+      expect(map.hash("test")).toBe(map.hash("test4"));
+      expect(map.length).toBe(3);
+      expect(map.remove("test4")).toBe(false);
+      expect(map.length).toBe(3);
     });
   });
 });
