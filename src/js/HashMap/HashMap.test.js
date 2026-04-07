@@ -253,4 +253,71 @@ describe("HashMap class", () => {
       expect(map.length).toBe(3);
     });
   });
+
+  describe("HashMap obj.length", () => {
+    test("correctly count entries length", () => {
+      map.set("test10", "test10to");
+      map.set("test12", "test12to");
+      map.set("test", "testto");
+      expect(map.length).toBe(3);
+      expect(map.remove("test")).toBe(true);
+      expect(map.length).toBe(2);
+    });
+
+    test("correctly count entries length after buckets growth", () => {
+      map.set("test", "test");
+      map.set("test1", "test1");
+      map.set("test2", "test2");
+      map.set("test3", "test3");
+      map.set("test4", "test4");
+      map.set("test5", "test5");
+      map.set("test6", "test6");
+      map.set("test7", "test7");
+      map.set("test8", "test8");
+      map.set("test9", "test9");
+      map.set("test10", "test10");
+      expect(map.length).toBe(11);
+      map.remove("test");
+      expect(map.length).toBe(10);
+      map.set("test11", "test11");
+      expect(map.length).toBe(11);
+      expect(map.capacity).toBe(16);
+      expect(map.set("test12", "test12").length).toBe(12);
+      expect(map.capacity).toBe(32);
+    });
+  });
+
+  describe("HashMap clear()", () => {
+    test("remove all key value pair, reset length, reset entries and buckets", () => {
+      map.set("test10", "test10to");
+      map.set("test12", "test12to");
+      map.set("test", "testto");
+      expect(map.length).toBe(3);
+      map.clear();
+      expect(map.has("test")).toBe(false);
+      expect(map.length).toBe(0);
+      expect(map.capacity).toBe(16);
+    });
+
+    test("correctly remove all key value pair, reset capacity, reset length and buckets after buckets growth", () => {
+      map.set("test1", "test1");
+      map.set("test2", "test2");
+      map.set("test3", "test3");
+      map.set("test4", "test4");
+      map.set("test5", "test5");
+      map.set("test6", "test6");
+      map.set("test7", "test7");
+      map.set("test8", "test8");
+      map.set("test9", "test9");
+      map.set("test10", "test10");
+      map.set("test11", "test11");
+      expect(map.length).toBe(11);
+      expect(map.capacity).toBe(16);
+      expect(map.set("test12", "test12").length).toBe(12);
+      expect(map.capacity).toBe(32);
+      map.clear();
+      expect(map.has("test1")).toBe(false);
+      expect(map.capacity).toBe(16);
+    });
+  });
 });

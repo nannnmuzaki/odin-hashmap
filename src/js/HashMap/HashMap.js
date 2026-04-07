@@ -115,11 +115,24 @@ export class HashMap {
     return deleted;
   }
 
-  // remove(key) takes a key as an argument. If the given key is in the hash map, it should remove the entry with that key and return true. If the key isn’t in the hash map, it should return false.
+  clear() {
+    this.#entries = 0;
+    this.#capacity = 16;
+    this.#buckets = new Array(this.#capacity).fill(null);
+    return this;
+  }
 
-  // length() returns the number of stored keys in the hash map.
-
-  // clear() removes all entries in the hash map.
+  // #traverse(callbackFn) {
+  //   for (let i = 0; i < this.#capacity; i++) {
+  //     if (this.#buckets[i] !== null && this.#buckets[i] instanceof LinkedList) {
+  //       let currentNode = this.#buckets[i].head;
+  //       for (let j = 0; j < this.#buckets[i].size; j++) {
+  //         callbackFn();
+  //         currentNode = currentNode.nextNode;
+  //       }
+  //     }
+  //   }
+  // }
 
   // keys() returns an array containing all the keys inside the hash map.
 
