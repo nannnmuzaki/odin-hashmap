@@ -142,7 +142,13 @@ export class HashMap {
     return keys;
   }
 
-  // keys() returns an array containing all the keys inside the hash map.
+  values() {
+    const values = [];
+    this.#traverse((node) => {
+      values.push(node.value);
+    });
+    return values;
+  }
 
   // values() returns an array containing all the values.
 
