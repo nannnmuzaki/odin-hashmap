@@ -378,7 +378,7 @@ describe("HashMap class", () => {
     });
   });
 
-  describe("HashMap keys()", () => {
+  describe("HashMap values()", () => {
     test("return array containing all values", () => {
       map.set("test10", "test10to");
       map.set("test12", "test12to");

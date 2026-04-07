@@ -157,8 +157,4 @@ export class HashMap {
     });
     return entries;
   }
-
-  // entries() returns an array that contains each key, value pair. Example: [[firstKey, firstValue], [secondKey, secondValue]]
-
-  // extra credit : Create a HashSet class or factory function that behaves the same as a HashMap but only contains keys with no values
 }
