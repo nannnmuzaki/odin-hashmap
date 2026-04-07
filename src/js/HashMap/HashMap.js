@@ -40,25 +40,20 @@ export class HashMap {
         targetNode.value = value;
         return this;
       }
-      bucket.append(key, value);
-      this.#entries++;
-      return this;
     }
 
     const growthTrigger = Math.floor(this.#capacity * this.#load_factor);
     if (this.#entries + 1 >= growthTrigger) {
-      const currentBuckets = this.#buckets;
+      const oldBuckets = this.#buckets;
+      const oldCapacity = this.#capacity;
       this.#entries = 0;
       this.#buckets = new Array(this.#capacity * 2).fill(null);
       this.#capacity *= 2;
 
-      for (let i = 0; i < this.#capacity; i++) {
-        if (
-          currentBuckets[i] !== null &&
-          currentBuckets[i] instanceof LinkedList
-        ) {
-          const size = currentBuckets[i].size;
-          let currentNode = currentBuckets[i].head;
+      for (let i = 0; i < oldCapacity; i++) {
+        if (oldBuckets[i] !== null && oldBuckets[i] instanceof LinkedList) {
+          const size = oldBuckets[i].size;
+          let currentNode = oldBuckets[i].head;
           for (let j = 0; j < size; j++) {
             this.set(currentNode.key, currentNode.value);
             currentNode = currentNode.nextNode;
@@ -78,6 +73,19 @@ export class HashMap {
     bucket.append(key, value);
     this.#entries++;
     return this;
+  }
+
+  get(key) {
+    const hashCode = this.hash(key);
+    const bucket = this.#buckets[hashCode];
+    let target = null;
+
+    if (bucket !== null && bucket instanceof LinkedList) {
+      target = bucket.search(key);
+    }
+
+    if (target !== null) return target.value;
+    return null;
   }
 
   // get(key) takes one argument as a key and returns the value that is assigned to this key. If a key is not found, return null.
